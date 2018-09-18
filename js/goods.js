@@ -182,19 +182,6 @@ var getAmountClass = function (good) {
 
 // Функция для добавления класса к rating при различных условиях
 
-var getRatingClass = function (good) {
-  if (good.rating.value === 1) {
-    return 'stars__rating--one';
-  } else if (good.rating.value === 2) {
-    return 'stars__rating--two';
-  } else if (good.rating.value === 3) {
-    return 'stars__rating--three';
-  } else if (good.rating.value === 4) {
-    return 'stars__rating--four';
-  }
-  return 'stars__rating--five';
-};
-
 // Генирируем карточку товаров
 
 var fragment = document.createDocumentFragment();
@@ -216,21 +203,15 @@ var basketTemplate = document.querySelector('#card-order').content.querySelector
 
 var createBasketElements = function (good) {
   var basketElement = basketTemplate.cloneNode(true);
-  basketElement.querySelector('.card__title').textContent = good.name;
-  basketElement.querySelector('.card__img').src = good.picture;
-  basketElement.querySelector('.card__price').innerHTML = good.price + '<span class="card__currency">₽</span><span class="card__weight">/' + good.weight + 'Г</span>';
-  basketElement.querySelector('.star__count').textContent = good.rating.number;
-  basketElement.querySelector('.card__characteristic').textContent = getRandomBol(good.nutritionFacts.sugar);
-  basketElement.querySelector('.card__composition-list').textContent = good.nutritionFacts.contents;
-  basketElement.querySelector('.stars__rating').classList.remove('stars__rating--five');
-  basketElement.querySelector('.stars__rating').classList.add(ratingClasses[good.rating.value - 1]);
-  basketElement.classList.add(getAmountClass(good));
+  basketElement.querySelector('.card-order__title').textContent = good.name;
+  basketElement.querySelector('.card-order__img').src = good.picture;
+  basketElement.querySelector('.card-order__price').innerHTML = good.price + '<span class="card-order__price">₽</span>';
   return basketElement;
 };
 
-var basketGoods = tmp.slice(0, 3);
-var fragment2 = document.createDocumentFragment();
+tmp.slice(0, 3);
+document.createDocumentFragment();
 for (var k = 0; k < GOODS_COUNT; k++) {
-  fragment2.appendChild(createBasketElements(basketGoods[k]));
+  fragment.appendChild(createBasketElements(tmp[k]));
 }
-catalogCards.appendChild(fragment2);
+basketCard.appendChild(fragment);
