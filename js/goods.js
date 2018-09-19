@@ -2,7 +2,7 @@
 
 var GOODS_COUNT = 26;
 
-var GOODS_NAME = [
+var GOODS_NAMES = [
   'Чесночные сливки',
   'Огуречный педант',
   'Молочная хрюша',
@@ -82,7 +82,15 @@ var PHOTOS = [
   'img/cards/soda-cob.jpg',
   'img/cards/soda-garlic.jpg',
   'img/cards/soda-peanut-grapes.jpg',
-  'img/cards/soda-russian.jpg'
+  '/img/cards/soda-russian.jpg'
+];
+
+var RATING_CLASSES = [
+  'stars__rating--one',
+  'stars__rating--two',
+  'stars__rating--three',
+  'stars__rating--four',
+  'stars__rating--five'
 ];
 
 // Функции для получения числа от и до, и случайное получение числа.
@@ -92,11 +100,11 @@ var getIntegerNumber = function (min, max) {
 };
 
 var getRandomNumber = function () {
-  return Math.random(Math.random());
+  return Math.random();
 };
 
 // Функция Сахара или без захара.
-var getRandomBol = function () {
+var getSugarStatus = function () {
   var result = Math.random() < 0.5 ? 'Содержит сахар' : 'Без сахара';
   return result;
 };
@@ -108,10 +116,10 @@ var generateIngridientsList = function () {
 };
 
 var generateProducts = function () {
-  var countGoods = [];
+  var goods = [];
   for (var i = 0; i < GOODS_COUNT; i++) {
-    countGoods[i] = {
-      name: GOODS_NAME[i],
+    goods[i] = {
+      name: GOODS_NAMES[i],
       picture: PHOTOS[i],
       amount: getIntegerNumber(0, 20),
       price: getIntegerNumber(100, 1500),
@@ -127,19 +135,10 @@ var generateProducts = function () {
       }
     };
   }
-  return countGoods;
+  return goods;
 };
 
-var tmp = generateProducts();
-
-// Классы рейтинга
-var ratingClasses = [
-  'stars__rating--one',
-  'stars__rating--two',
-  'stars__rating--three',
-  'stars__rating--four',
-  'stars__rating--five'
-];
+var generated = generateProducts();
 
 // Работа с классами
 
@@ -153,16 +152,16 @@ var catalogTemplate = document.querySelector('#card').content.querySelector('.ca
 
 // Функция отрисовки элементов с данными для карточки
 
-var createCardElements = function (good) {
+var createCardElement = function (good) {
   var cardElement = catalogTemplate.cloneNode(true);
   cardElement.querySelector('.card__title').textContent = good.name;
   cardElement.querySelector('.card__img').src = good.picture;
   cardElement.querySelector('.card__price').innerHTML = good.price + '<span class="card__currency">₽</span><span class="card__weight">/' + good.weight + 'Г</span>';
   cardElement.querySelector('.star__count').textContent = good.rating.number;
-  cardElement.querySelector('.card__characteristic').textContent = getRandomBol(good.nutritionFacts.sugar);
+  cardElement.querySelector('.card__characteristic').textContent = getSugarStatus(good.nutritionFacts.sugar);
   cardElement.querySelector('.card__composition-list').textContent = good.nutritionFacts.contents;
   cardElement.querySelector('.stars__rating').classList.remove('stars__rating--five');
-  cardElement.querySelector('.stars__rating').classList.add(ratingClasses[good.rating.value - 1]);
+  cardElement.querySelector('.stars__rating').classList.add(RATING_CLASSES[good.rating.value - 1]);
   cardElement.classList.add(getAmountClass(good));
   return cardElement;
 };
@@ -174,19 +173,15 @@ var getAmountClass = function (good) {
     return 'card--in-stock';
   } else if (good.amount >= 1 && good.amount <= 5) {
     return 'card--little';
-  } else if (good.amount === 0) {
-    return 'card--soon';
   }
-  return getAmountClass;
+  return 'card--soon';
 };
-
-// Функция для добавления класса к rating при различных условиях
 
 // Генирируем карточку товаров
 
 var fragment = document.createDocumentFragment();
 for (var i = 0; i < GOODS_COUNT; i++) {
-  fragment.appendChild(createCardElements(tmp[i]));
+  fragment.appendChild(createCardElement(generated[i]));
 }
 catalogCards.appendChild(fragment);
 
@@ -201,7 +196,7 @@ basketCardHidden.classList.add('visually-hidden');
 
 var basketTemplate = document.querySelector('#card-order').content.querySelector('.goods_card');
 
-var createBasketElements = function (good) {
+var createBasketElement = function (good) {
   var basketElement = basketTemplate.cloneNode(true);
   basketElement.querySelector('.card-order__title').textContent = good.name;
   basketElement.querySelector('.card-order__img').src = good.picture;
@@ -209,9 +204,8 @@ var createBasketElements = function (good) {
   return basketElement;
 };
 
-tmp.slice(0, 3);
 document.createDocumentFragment();
-for (var k = 0; k < GOODS_COUNT; k++) {
-  fragment.appendChild(createBasketElements(tmp[k]));
+for (var k = 0; k < 3; k++) {
+  fragment.appendChild(createBasketElement(generated[k]));
 }
 basketCard.appendChild(fragment);
