@@ -611,10 +611,6 @@ body {
   background-color: #8269ff;
   transition: background-color 0.2s ease;
 }
-.card__btn-favorite:focus {
-  background-color: #6e58d9;
-  transition: background-color 0.2s ease
-}
 .card__btn-favorite--selected {
   background-color: #8269ff
 }

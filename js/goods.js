@@ -177,15 +177,6 @@ var getAmountClass = function (good) {
   return 'card--soon';
 };
 
-// Генирируем карточку товаров
-
-var fragment = document.createDocumentFragment();
-for (var i = 0; i < GOODS_COUNT; i++) {
-  fragment.appendChild(createCardElement(generated[i]));
-}
-catalogCards.appendChild(fragment);
-
-
 // Третья часть, генерируем еще один массив
 
 var basketCard = document.querySelector('.goods__cards');
@@ -204,8 +195,59 @@ var createBasketElement = function (good) {
   return basketElement;
 };
 
-document.createDocumentFragment();
-for (var k = 0; k < 3; k++) {
-  fragment.appendChild(createBasketElement(generated[k]));
+// for (var k = 0; k < 3; k++) {
+//   fragment.appendChild(createBasketElement(generated[k]));
+// }
+// basketCard.appendChild(fragment);
+
+// Функция рендеринга Массива товаров.
+var goodsList = document.querySelector('.catalog__cards');
+
+var renderElements = function () {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < GOODS_COUNT; i++) {
+    fragment.appendChild(createCardElement(generated[i]));
+  }
+  goodsList.appendChild(fragment);
+};
+
+renderElements();
+
+// Добавление в избранное
+var favoriteButton = document.querySelectorAll('.card__btn-favorite');
+var clickFavoriteElement = null;
+
+for (var l = 0; l < favoriteButton.length; l++) {
+  favoriteButton[l].addEventListener('click', function (event) {
+    clickFavoriteElement = event.currentTarget;
+    event.preventDefault();
+    clickFavoriteElement.classList.toggle('card__btn-favorite--selected');
+  });
 }
-basketCard.appendChild(fragment);
+
+// Добавление в корзину
+var cardBtn = document.querySelectorAll('.card__btn');
+var basketGoods = [];
+
+var newBasketProduct = Object.assign({}, );
+for (var m = 0; m < cardBtn.length; m++) {
+  cardBtn[m].addEventListener('click', function (event) {
+    event.preventDefault();
+    basketGoods.appendChild(createCardElement(generated[i]))
+  });
+}
+
+function find () {
+  for (var i = 0; i < generated.length; i++) {
+    if (generated[i].name === title) {
+      return generated[i];
+    }
+  }
+  return undefined;
+}
+
+var callback = function (generatedPart) {
+  return generatedPart.name === title;
+}
+
+var findedElement = generated.find(callback)
