@@ -195,10 +195,10 @@ var createBasketElement = function (good) {
   return basketElement;
 };
 
-// for (var k = 0; k < 3; k++) {
-//   fragment.appendChild(createBasketElement(generated[k]));
-// }
-// basketCard.appendChild(fragment);
+for (var k = 0; k < 3; k++) {
+  basketTemplate.appendChild(createBasketElement(generated[k]));
+}
+basketCard.appendChild(basketTemplate);
 
 // Функция рендеринга Массива товаров.
 var goodsList = document.querySelector('.catalog__cards');
@@ -224,30 +224,3 @@ for (var l = 0; l < favoriteButton.length; l++) {
     clickFavoriteElement.classList.toggle('card__btn-favorite--selected');
   });
 }
-
-// Добавление в корзину
-var cardBtn = document.querySelectorAll('.card__btn');
-var basketGoods = [];
-
-var newBasketProduct = Object.assign({}, );
-for (var m = 0; m < cardBtn.length; m++) {
-  cardBtn[m].addEventListener('click', function (event) {
-    event.preventDefault();
-    basketGoods.appendChild(createCardElement(generated[i]))
-  });
-}
-
-function find () {
-  for (var i = 0; i < generated.length; i++) {
-    if (generated[i].name === title) {
-      return generated[i];
-    }
-  }
-  return undefined;
-}
-
-var callback = function (generatedPart) {
-  return generatedPart.name === title;
-}
-
-var findedElement = generated.find(callback)
